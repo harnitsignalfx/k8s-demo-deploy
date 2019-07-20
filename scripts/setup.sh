@@ -35,12 +35,12 @@ rc=$?
 if [ $rc == 0 ]
 then
   echo "Applying dockerfile patch"
-  cat guestbook-go-dockerfile.patch | (cd ../examples/guestbook-go/ ; patch Dockerfile)
-  cat guestbook-go-makefile.patch | (cd ../examples/guestbook-go/ ; patch Makefile)
-  cat guestbook-controller-json.patch | (cd ../examples/guestbook-go/ ; patch guestbook-controller.json)
-  cat frontend-service-yaml.patch | (cd ../examples/guestbook/ ; patch frontend-service.yaml)
+  cat guestbook-go-dockerfile.patch | (cd /k8s-demo-deploy/examples/guestbook-go/ ; patch Dockerfile)
+  cat guestbook-go-makefile.patch | (cd /k8s-demo-deploy/examples/guestbook-go/ ; patch Makefile)
+  cat guestbook-controller-json.patch | (cd /k8s-demo-deploy/examples/guestbook-go/ ; patch guestbook-controller.json)
+  cat frontend-service-yaml.patch | (cd /k8s-demo-deploy/examples/guestbook/ ; patch frontend-service.yaml)
   echo "Building docker image"
-  (cd ../examples/guestbook-go; make build)
+  (cd /k8s-demo-deploy/examples/guestbook-go; make build)
   rc=$?
   if [ $rc != 0 ]
   then
@@ -53,12 +53,12 @@ fi
 
 #deploy a well behaved workload
 
-kubectl --namespace $namespace apply -f ../examples/guestbook/redis-master-deployment.yaml
-kubectl --namespace $namespace apply -f ../examples/guestbook/redis-master-service.yaml
-kubectl --namespace $namespace apply -f ../examples/guestbook/redis-slave-deployment.yaml
-kubectl --namespace $namespace apply -f ../examples/guestbook/redis-slave-service.yaml
-kubectl --namespace $namespace apply -f ../examples/guestbook/frontend-deployment.yaml
-kubectl --namespace $namespace apply -f ../examples/guestbook/frontend-service.yaml
+kubectl --namespace $namespace apply -f /k8s-demo-deploy/examples/guestbook/redis-master-deployment.yaml
+kubectl --namespace $namespace apply -f /k8s-demo-deploy/examples/guestbook/redis-master-service.yaml
+kubectl --namespace $namespace apply -f /k8s-demo-deploy/examples/guestbook/redis-slave-deployment.yaml
+kubectl --namespace $namespace apply -f /k8s-demo-deploy/examples/guestbook/redis-slave-service.yaml
+kubectl --namespace $namespace apply -f /k8s-demo-deploy/examples/guestbook/frontend-deployment.yaml
+kubectl --namespace $namespace apply -f /k8s-demo-deploy/examples/guestbook/frontend-service.yaml
 
 a=1
 while [ $a -lt 500 ]
